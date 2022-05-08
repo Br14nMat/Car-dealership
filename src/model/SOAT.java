@@ -14,10 +14,6 @@ public class SOAT extends Document {
 		return this.coverageAmount;
 	}
 
-	/**
-	 * 
-	 * @param coverageAmount
-	 */
 	public void setCoverageAmount(double coverageAmount) {
 		this.coverageAmount = coverageAmount;
 	}

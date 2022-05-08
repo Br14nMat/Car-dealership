@@ -10,49 +10,40 @@ public abstract class Document {
 	public Document(double price, int year) {
 		this.price = price;
 		this.year = year;
+
+		generateImage();
+	}
+
+	public void generateImage() {
+
+	}
+
+	public abstract void decode();
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	public double getPrice() {
-		return this.price;
+		return price;
 	}
 
-	/**
-	 * 
-	 * @param price
-	 */
 	public void setPrice(double price) {
 		this.price = price;
 	}
 
 	public int getYear() {
-		return this.year;
+		return year;
 	}
 
-	/**
-	 * 
-	 * @param year
-	 */
 	public void setYear(int year) {
 		this.year = year;
 	}
 
-	public String getCode() {
-		return this.code;
-	}
-
-	/**
-	 * 
-	 * @param code
-	 */
-	public void setCode(String code) {
-		this.code = code;
-	}
-
-	public abstract void decode();
-
-	public Document() {
-		// TODO - implement Document.Document
-		throw new UnsupportedOperationException();
-	}
+	
 
 }

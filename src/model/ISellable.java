@@ -2,6 +2,6 @@ package model;
 
 public interface ISellable {
 
-	void calculateSellingPrice();
+	double calculateSellingPrice();
 
 }

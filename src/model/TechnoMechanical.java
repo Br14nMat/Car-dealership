@@ -13,17 +13,17 @@ public class TechnoMechanical extends Document {
 		return this.gasEmitted;
 	}
 
-	/**
-	 * 
-	 * @param gasEmitted
-	 */
+
 	public void setGasEmitted(double gasEmitted) {
 		this.gasEmitted = gasEmitted;
 	}
 
+	@Override
 	public void decode() {
-		// TODO - implement TechnoMechanical.decode
-		throw new UnsupportedOperationException();
+		// TODO Auto-generated method stub
+		
 	}
+
+	
 
 }
