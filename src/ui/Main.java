@@ -1,7 +1,12 @@
 package ui;
 
 import java.util.Scanner;
+
 import model.Controller;
+
+/**
+ * The Main Class.
+ */
 
 public class Main {
 
@@ -21,18 +26,29 @@ public class Main {
 	public Main() {
 		
 		sc = new Scanner(System.in);
-		controller = new Controller();
+		InitModel initModel = new InitModel();
+		controller = new Controller(initModel.initVehicles());
 
 	}
 
 	public static void main(String[] args) {
 
 		Main main = new Main();
+		
+		System.out.println("\n");
+		System.out.println(":'######:::::'###::::'########:::::'########::'########::::'###::::'##:::::::'########:'########:::'######::'##::::'##:'####:'########::");
+		System.out.println("'##... ##:::'## ##::: ##.... ##:::: ##.... ##: ##.....::::'## ##::: ##::::::: ##.....:: ##.... ##:'##... ##: ##:::: ##:. ##:: ##.... ##:");
+		System.out.println(" ##:::..:::'##:. ##:: ##:::: ##:::: ##:::: ##: ##::::::::'##:. ##:: ##::::::: ##::::::: ##:::: ##: ##:::..:: ##:::: ##:: ##:: ##:::: ##:");
+		System.out.println(" ##:::::::'##:::. ##: ########::::: ##:::: ##: ######:::'##:::. ##: ##::::::: ######::: ########::. ######:: #########:: ##:: ########::");
+		System.out.println(" ##::::::: #########: ##.. ##:::::: ##:::: ##: ##...:::: #########: ##::::::: ##...:::: ##.. ##::::..... ##: ##.... ##:: ##:: ##.....:::");
+		System.out.println(" ##::: ##: ##.... ##: ##::. ##::::: ##:::: ##: ##::::::: ##.... ##: ##::::::: ##::::::: ##::. ##::'##::: ##: ##:::: ##:: ##:: ##::::::::");
+		System.out.println(". ######:: ##:::: ##: ##:::. ##:::: ########:: ########: ##:::: ##: ########: ########: ##:::. ##:. ######:: ##:::: ##:'####: ##::::::::");
+		System.out.println(":......:::..:::::..::..:::::..:::::........:::........::..:::::..::........::........::..:::::..:::......:::..:::::..::....::..:::::::::");
+		System.out.println("\n");
 
 		int option = 0;
-		
-		do{
 
+		do{
 			main.showMenu();
 			option = main.readOption();
 			main.executeOption(option);
@@ -41,6 +57,7 @@ public class Main {
 
 	}
 
+	
 	/**
 	 * Method to show the main menu
 	 */
@@ -50,6 +67,9 @@ public class Main {
 		System.out.println("1. Register vehicle\n" + 
 							"2. Calculate selling price\n" +
 							"3. Generate report\n" +
+							"4. Show document status\n" +
+							"5. Show parking map\n" +
+							"6. Generate parking report\n" +
 							"0. Exit");
 
 	}
@@ -73,6 +93,7 @@ public class Main {
 	 * Method to execute the option chosen by the user
 	 * @param option the option chosen by the user
 	 */
+
 	public void executeOption(int option) {
 		
 		switch(option) {
@@ -85,6 +106,15 @@ public class Main {
 				break;
 			case 3:
 				generateReport();
+				break;
+			case 4:
+				showDocumentStatus();
+				break;
+			case 5:
+				showParkingMap();
+				break;
+			case 6:
+				generateParkingReport();
 				break;
 			case 0:
 				System.out.println("Bye...");
@@ -105,9 +135,9 @@ public class Main {
 		boolean registered = false;
 
 		//basic vehicle information
-		int vehicleType = 0;
+		int vehicleType = 0, model = 0;
 		double basePrice = 0, mileage = 0;
-		String brand = "", model = "", licensePlate = "";
+		String brand = "", licensePlate = "";
 		int cylinderCapacity = 0;
 
 		System.out.println("Type of vehicle: ");
@@ -123,7 +153,8 @@ public class Main {
 		brand = sc.nextLine();
 
 		System.out.println("Model: ");
-		model = sc.nextLine();
+		model = sc.nextInt();
+		sc.nextLine();
 
 		System.out.println("Cylinder capacity: ");
 		cylinderCapacity = sc.nextInt();
@@ -137,11 +168,11 @@ public class Main {
 		licensePlate = (vehicleType == 1) ? null : sc.nextLine();
 
 
-		//Documents
+		//Documents information
 		Double tmPrice = null, soatPrice = null, pcPrice = null, coverageAmount = null, gasEmitted = null;
 		Integer tmYear = null, soatYear = null, pcYear = null;
 
-		//If the vehicle is used, the user must enter the documents
+		//If the vehicle is used, the user must enter the documents information
 		if(vehicleType == 2) {
 
 			System.out.println("Property card info: ");
@@ -167,28 +198,19 @@ public class Main {
 			gasEmitted = sc.nextDouble();
 			sc.nextLine();
 
-			System.out.println("Vehicle has SOAT?");
-			System.out.println("1)Yes  2)No");
-			int hasSOAT = sc.nextInt();
+			System.out.println("SOAT info:");
+
+			System.out.println("Price: ");
+			soatPrice = sc.nextDouble();
 			sc.nextLine();
 
-			if(hasSOAT == 1) {
+			System.out.println("Year: ");
+			soatYear = sc.nextInt();
+			sc.nextLine();
 
-				System.out.println("SOAT info:");
-
-				System.out.println("Price: ");
-				soatPrice = sc.nextDouble();
-				sc.nextLine();
-
-				System.out.println("Year: ");
-				soatYear = sc.nextInt();
-				sc.nextLine();
-
-				System.out.println("Coverage amount: ");
-				coverageAmount = sc.nextDouble();
-				sc.nextLine();
-
-			}
+			System.out.println("Coverage amount: ");
+			coverageAmount = sc.nextDouble();
+			sc.nextLine();
 
 		}
 
@@ -199,10 +221,10 @@ public class Main {
 		option = sc.nextInt();
 		sc.nextLine();
 
-		//register motorcycle
+		//Register motorcycle
 		if(option == 2) {
 
-			double gasolineCapacity = 0, gasolineConsumption = 0;
+			double gasolineCapacity = 0;
 			int motorcycleType = 0;
 
 			System.out.println("Motorcycle type: ");
@@ -216,14 +238,11 @@ public class Main {
 			gasolineCapacity = sc.nextDouble();
 			sc.nextLine();
 
-			System.out.println("Gasoline consumption: ");
-			gasolineConsumption = (motorcycleType == 1) ? 0 : sc.nextDouble();
-			sc.nextLine();
-
-			registered = controller.registerVehicle(vehicleType, basePrice, brand, model, cylinderCapacity, mileage, licensePlate, pcPrice, pcYear, tmPrice, tmYear, gasEmitted, soatPrice, soatYear, coverageAmount, motorcycleType, gasolineCapacity, gasolineConsumption);
+			registered = controller.registerVehicle(vehicleType, basePrice, brand, model, cylinderCapacity, mileage, licensePlate, pcPrice, pcYear, tmPrice, tmYear, gasEmitted, soatPrice, soatYear, coverageAmount, motorcycleType, gasolineCapacity);
 
 
 		}else {
+			//Register car
 			int doorsNumber = 0, hasTintedWindows = 0, carType = 0, carType2 = 0;
 
 			System.out.println("Car info:");
@@ -249,9 +268,9 @@ public class Main {
 			hasTintedWindows = sc.nextInt();
 			sc.nextLine();
 
-			//register gasoline car
+			//Register gasoline car
 			if(carType2 == 1) {
-				double tankCapacity = 0, gasolineConsumption = 0;
+				double tankCapacity = 0;
 				int gasolineType = 0;
 
 				System.out.println("Gasoline type: ");
@@ -266,17 +285,12 @@ public class Main {
 				tankCapacity = sc.nextDouble();
 				sc.nextLine();
 
-				System.out.println("Gasoline consumption: ");
-				gasolineConsumption = (vehicleType == 1) ? 0 : sc.nextDouble();
-				sc.nextLine();
-
-				registered = controller.registerVehicle(vehicleType,basePrice, brand, model, cylinderCapacity, mileage, licensePlate, pcPrice, pcYear, tmPrice, tmYear, gasEmitted, soatPrice, soatYear, coverageAmount, carType, doorsNumber, hasTintedWindows, gasolineType, tankCapacity, gasolineConsumption);
+				registered = controller.registerVehicle(vehicleType,basePrice, brand, model, cylinderCapacity, mileage, licensePlate, pcPrice, pcYear, tmPrice, tmYear, gasEmitted, soatPrice, soatYear, coverageAmount, carType, doorsNumber, hasTintedWindows, gasolineType, tankCapacity);
 			}
 
-			//register electric car
+			//Register electric car
 			if(carType2 == 2) {
 
-				double batteryConsumption = 0;
 				int batteryLife = 0, chargerType = 0;
 
 				System.out.println("Charger type: ");
@@ -289,19 +303,14 @@ public class Main {
 				batteryLife = sc.nextInt();
 				sc.nextLine();
 
-				System.out.println("Battery consumption: ");
-				batteryConsumption = sc.nextDouble();
-				sc.nextLine();
-
-				registered = controller.registerVehicle(vehicleType, basePrice, brand, model, cylinderCapacity, mileage, licensePlate, pcPrice, pcYear, tmPrice, tmYear, gasEmitted, soatPrice, soatYear, coverageAmount, carType, doorsNumber, hasTintedWindows, chargerType, batteryLife, batteryConsumption);
+				registered = controller.registerVehicle(vehicleType, basePrice, brand, model, cylinderCapacity, mileage, licensePlate, pcPrice, pcYear, tmPrice, tmYear, gasEmitted, soatPrice, soatYear, coverageAmount, carType, doorsNumber, hasTintedWindows, chargerType, batteryLife);
 			}
 
-			//register hybrid car
+			//Register hybrid car
 			if(carType2 == 3) {
-				double tankCapacity = 0, gasolineConsumption = 0;
+				double tankCapacity = 0;
 				int gasolineType = 0;
 
-				double batteryConsumption = 0;
 				int batteryLife = 0, chargerType = 0;
 
 				System.out.println("Gasoline type: ");
@@ -315,10 +324,6 @@ public class Main {
 				tankCapacity = sc.nextDouble();
 				sc.nextLine();
 
-				System.out.println("Gasoline consumption: ");
-				gasolineConsumption = sc.nextDouble();
-				sc.nextLine();
-
 				System.out.println("Charger type: ");
 				System.out.println("1)Fast\n" +
 									"2)Normal\n");
@@ -328,11 +333,8 @@ public class Main {
 				batteryLife = sc.nextInt();
 				sc.nextLine();
 
-				System.out.println("Battery consumption: ");
-				batteryConsumption = sc.nextDouble();
-				sc.nextLine();
 
-				registered = controller.registerVehicle(vehicleType, basePrice, brand, model, cylinderCapacity, mileage, licensePlate, pcPrice, pcYear, tmPrice, tmYear, gasEmitted, soatPrice, soatYear, coverageAmount, carType, doorsNumber, hasTintedWindows, gasolineType, tankCapacity, gasolineConsumption, chargerType, batteryLife, batteryConsumption);
+				registered = controller.registerVehicle(vehicleType, basePrice, brand, model, cylinderCapacity, mileage, licensePlate, pcPrice, pcYear, tmPrice, tmYear, gasEmitted, soatPrice, soatYear, coverageAmount, carType, doorsNumber, hasTintedWindows, gasolineType, tankCapacity, chargerType, batteryLife);
 				
 			}
 
@@ -346,10 +348,24 @@ public class Main {
 
 	}
 
+	/**
+	 * Method to calculate the selling price of a vehicle. It prints the selling price of the vehicle or a message if the vehicle is not registered.
+	 */
+
 	public void calculateSellingPrice() {
 
-		System.out.println("Calculation finished");
+		System.out.println("Enter the id of the vehicle to calculate the selling price: ");
+		String id = sc.nextLine();
+
+		System.out.println((controller.calculateSellingPrice(id) != -1)
+							? "Selling price: " + controller.calculateSellingPrice(id)
+							: "Vehicle not found");
+		
 	}
+
+	/**
+	 * Method to generate reports of the vehicles. The report can be by type, fuel type or use.
+	 */
 
 	public void generateReport() {
 
@@ -358,11 +374,88 @@ public class Main {
 		System.out.println("Generate report by: ");
 		System.out.println("1)Type\n" +
 							"2)Fuel type\n" +
-							"3)New or used");
+							"3)Usage");
 		option = sc.nextInt();
 		sc.nextLine();
 
-		controller.generateReport(option);
+		System.out.println(controller.generateReport(option));
+
+	}
+
+	/**
+	 * Method to show the document status of a vehicle.
+	 */
+	public void showDocumentStatus(){
+
+		String id = "";
+		System.out.println("Enter the vehicle ID: ");
+		id = sc.nextLine();
+
+		System.out.println(controller.showDocumentStatus(id));
+
+	}
+
+	/**
+	 * Method to show the parking map. The map shows the empty and occupied spaces.
+	 */
+
+	public void showParkingMap(){
+
+		System.out.println(controller.showParkingMap());
+
+	}
+
+	/**
+	 * Method to generate reports of the parking. The report can be by range of years, newest/oldest vehicle or occupancy percentage.
+	 */
+
+	public void generateParkingReport(){
+
+		System.out.println("Generate parking report by: ");
+		System.out.println("1)Range of years \n" +
+							"2)Oldest/Newest vehicle \n" +
+							"3)Occupancy percentage \n");
+		int option = sc.nextInt();
+
+		switch (option) {
+			case 1:
+				int firstYear = 0, lastYear = 0;
+				do {//The range includes the first and last year [firstYear, lastYear].
+					//(option - 1) corresponds to the index of the parking column with the vehicles of this year.
+					//Ex: option 1) 2014 corresponds to the index 0 of the parking column. This column contains the 2014 cars.
+					System.out.println("Enter the first year: ");
+					System.out.println("1) 2014\n" +
+										"2) 2013\n" +
+										"3) 2012\n" +
+										"4) 2011\n" +
+										"5) <2011\n");
+					firstYear = sc.nextInt();
+					sc.nextLine();
+
+					System.out.println("Enter the last year: ");
+					System.out.println("1) 2014\n" +
+										"2) 2013\n" +
+										"3) 2012\n" +
+										"4) 2011\n" +
+										"5) <2011\n");
+					lastYear = sc.nextInt();
+					sc.nextLine();
+
+				} while ((firstYear < lastYear)||(firstYear < 1 || firstYear > 5) || (lastYear < 1 || lastYear > 5));
+				System.out.println(controller.oldCarsInRange(firstYear, lastYear));
+				break;
+			case 2:
+				System.out.println("The oldest vehicle is: \n");
+				System.out.println(controller.oldestVehicle());
+				System.out.println("The newest vehicle is: \n");
+				System.out.println(controller.newestVehicle());
+				break;
+			case 3:
+				System.out.println("Occupancy percentage: ");
+				System.out.println(controller.parkingOccupancyPercentage() + "%");
+				break;
+			
+		}
 
 	}
 
