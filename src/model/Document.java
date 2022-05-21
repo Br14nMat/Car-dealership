@@ -71,7 +71,7 @@ public abstract class Document {
 
 		return img;
 	}	
-
+	
 	/**
 	 * Method to return the information of the document.
 	 */
